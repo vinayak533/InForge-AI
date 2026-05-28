@@ -19,11 +19,11 @@ logger = logging.getLogger("InForgeMain")
 
 app = FastAPI(title="InForge AI API", description="Autonomous multi-agent data analytics engine")
 
-# Configure CORS for local React development
+# Configure CORS for cross-origin frontend deployment (Vercel)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False, # Must be False if allow_origins is ["*"] to prevent browser CORS exceptions
     allow_methods=["*"],
     allow_headers=["*"],
 )

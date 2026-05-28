@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { getWsHost } from "../config/api";
+import { getWsUrl } from "../config/api";
 
 const INITIAL_STEPS = [
   { name: "ingestion", label: "Data Ingestion", status_text: "Waiting for ingestion...", state: "pending" },
@@ -39,9 +39,7 @@ export function useAgentStream(sessionId, onComplete) {
     connectedRef.current = true;
     
     // Construct WebSocket URL
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = getWsHost();
-    const wsUrl = `${protocol}//${host}/ws/${sessionId}`;
+    const wsUrl = getWsUrl(sessionId);
     
     console.log("Connecting WebSocket to: ", wsUrl);
     const ws = new WebSocket(wsUrl);

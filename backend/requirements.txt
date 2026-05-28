@@ -13,3 +13,4 @@ httpx
 websockets
 python-multipart
 google-genai
+python-dotenv

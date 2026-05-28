@@ -12,13 +12,67 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("BaseAgent")
 
-# API Configuration
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+def _clean_and_heal_env():
+    """
+    Robustly parses environment variables to auto-heal common pasting mistakes 
+    (such as trailing newlines or pasting multiple key-value pairs into a single secret).
+    """
+    raw_gemini = os.getenv("GEMINI_API_KEY", "")
+    raw_groq = os.getenv("GROQ_API_KEY", "")
+    raw_openrouter = os.getenv("OPENROUTER_API_KEY", "")
+    
+    # Standard dictionary to store parsed keys
+    keys = {
+        "GEMINI_API_KEY": raw_gemini,
+        "GROQ_API_KEY": raw_groq,
+        "OPENROUTER_API_KEY": raw_openrouter
+    }
+    
+    # Auto-heal: If any secret contains newlines with "=" signs, parse them as extra env vars
+    for secret_name, raw_val in list(keys.items()):
+        if not raw_val:
+            continue
+        lines = [line.strip() for line in raw_val.replace('\r', '').split('\n') if line.strip()]
+        if not lines:
+            continue
+            
+        # The first line is always the primary value of this secret
+        primary_val = lines[0]
+        if "=" in primary_val and primary_val.split("=")[0].strip() in ["GEMINI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY"]:
+            # If the user pasted the entire file starting with KEY=VAL on the first line
+            parts = primary_val.split("=", 1)
+            keys[parts[0].strip()] = parts[1].strip()
+        else:
+            keys[secret_name] = primary_val
+            
+        # Parse subsequent lines if they are key-value pairs (e.g. KEY=VAL)
+        for line in lines[1:]:
+            if "=" in line:
+                k, v = line.split("=", 1)
+                k = k.strip()
+                v = v.strip()
+                if k in ["GEMINI_API_KEY", "GROQ_API_KEY", "OPENROUTER_API_KEY"]:
+                    keys[k] = v
+                    os.environ[k] = v
 
-# Clients and URLs
-gemini_client = genai.Client(api_key=GEMINI_API_KEY)
+    # Final sanitization (remove trailing comments, quotes, spaces)
+    for k in keys:
+        val = keys[k]
+        if val:
+            # Strip quotes, comments, trailing whitespace
+            val = val.strip().replace('"', '').replace("'", "")
+            if " " in val: # If there's a comment in the line (e.g. "key # comment")
+                val = val.split("#")[0].strip()
+            keys[k] = val
+            os.environ[k] = val
+            
+    return keys["GEMINI_API_KEY"], keys["GROQ_API_KEY"], keys["OPENROUTER_API_KEY"]
+
+# Retrieve sanitized and healed API Configuration
+GEMINI_API_KEY, GROQ_API_KEY, OPENROUTER_API_KEY = _clean_and_heal_env()
+
+# Reinitialize Gemini GenAI client using the cleaned key
+gemini_client = genai.Client(api_key=GEMINI_API_KEY) if GEMINI_API_KEY else None
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 

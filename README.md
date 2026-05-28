@@ -1,13 +1,12 @@
 ---
+
 title: InForge AI Backend
 emoji: 🤖
 colorFrom: blue
 colorTo: purple
 sdk: docker
 pinned: false
----
-
----
+-------------
 
 # 🚀 INFORGE-AI
 
@@ -17,14 +16,14 @@ INFORGE-AI is an enterprise-grade autonomous AI analytics system that transforms
 
 Users simply upload a CSV or Excel dataset, and the platform automatically performs:
 
-- Data ingestion
-- Data cleaning
-- Exploratory Data Analysis (EDA)
-- Visualization generation
-- Machine learning benchmarking
-- Business insight synthesis
-- Python code generation
-- Conversational Q&A
+* Data ingestion
+* Data cleaning
+* Exploratory Data Analysis (EDA)
+* Visualization generation
+* Machine learning benchmarking
+* Business insight synthesis
+* Python code generation
+* Conversational Q&A
 
 All with zero manual intervention.
 
@@ -32,17 +31,17 @@ All with zero manual intervention.
 
 # ✨ Features
 
-- 🤖 8-Agent Autonomous AI Pipeline
-- 📊 Automated EDA & Visualization
-- 🧠 Multi-LLM Architecture (Gemini, Groq, Nemotron)
-- ⚡ Real-Time WebSocket Streaming
-- 📈 Auto ML Task Detection
-- 📄 PDF Report Export
-- 🐍 Python Code Generation
-- 💬 Interactive AI Chat Assistant
-- 🎨 Premium Glassmorphism UI
-- 🚀 FastAPI + React + Vite Architecture
-- 🔄 End-to-End Automated Analytics
+* 🤖 8-Agent Autonomous AI Pipeline
+* 📊 Automated EDA & Visualization
+* 🧠 Multi-LLM Architecture (Gemini, Groq, Nemotron)
+* ⚡ Real-Time WebSocket Streaming
+* 📈 Auto ML Task Detection
+* 📄 PDF Report Export
+* 🐍 Python Code Generation
+* 💬 Interactive AI Chat Assistant
+* 🎨 Premium Glassmorphism UI
+* 🚀 FastAPI + React + Vite Architecture
+* 🔄 End-to-End Automated Analytics
 
 ---
 
@@ -81,17 +80,17 @@ LLMs + ML Models + Analytics Engine
 
 ## Backend
 
-- FastAPI
-- Uvicorn
-- AsyncIO
-- WebSockets
-- Pandas
-- NumPy
-- Scikit-learn
-- XGBoost
-- Matplotlib
-- Seaborn
-- ReportLab
+* FastAPI
+* Uvicorn
+* AsyncIO
+* WebSockets
+* Pandas
+* NumPy
+* Scikit-learn
+* XGBoost
+* Matplotlib
+* Seaborn
+* ReportLab
 
 ## AI Models
 
@@ -103,12 +102,12 @@ LLMs + ML Models + Analytics Engine
 
 ## Frontend
 
-- React 19
-- Vite
-- Tailwind CSS 4
-- Framer Motion
-- Recharts
-- Lucide React
+* React 19
+* Vite
+* Tailwind CSS 4
+* Framer Motion
+* Recharts
+* Lucide React
 
 ---
 
@@ -162,22 +161,22 @@ INFORGE-AI automatically detects the appropriate ML task.
 
 ## Classification Models
 
-- Logistic Regression
-- Random Forest
-- XGBoost
-- KNN
+* Logistic Regression
+* Random Forest
+* XGBoost
+* KNN
 
 ## Regression Models
 
-- Linear Regression
-- Ridge Regression
-- Random Forest Regressor
-- XGBoost Regressor
+* Linear Regression
+* Ridge Regression
+* Random Forest Regressor
+* XGBoost Regressor
 
 ## Clustering Models
 
-- KMeans
-- DBSCAN
+* KMeans
+* DBSCAN
 
 ---
 
@@ -191,10 +190,10 @@ ws://localhost:8000/ws/{session_id}
 
 Features include:
 
-- Live progress updates
-- Step-by-step pipeline tracking
-- Real-time UI synchronization
-- Progress replay support
+* Live progress updates
+* Step-by-step pipeline tracking
+* Real-time UI synchronization
+* Progress replay support
 
 ---
 
@@ -257,14 +256,14 @@ http://localhost:5173
 
 ## Frontend Deployment
 
-- Vercel
+* Vercel
 
 ## Backend Deployment
 
-- Hugging Face Spaces (Docker)
-- Railway
-- Render
-- AWS EC2
+* Hugging Face Spaces (Docker)
+* Railway
+* Render
+* AWS EC2
 
 ---
 
@@ -282,19 +281,19 @@ OPENROUTER_API_KEY=your_key
 
 # 📄 Export Features
 
-- PDF business reports
-- Cleaned CSV datasets
-- Generated Python analysis scripts
+* PDF business reports
+* Cleaned CSV datasets
+* Generated Python analysis scripts
 
 ---
 
 # 🎨 UI Highlights
 
-- Dark premium theme
-- Glassmorphism interface
-- Animated transitions
-- Interactive dashboards
-- Real-time progress indicators
+* Dark premium theme
+* Glassmorphism interface
+* Animated transitions
+* Interactive dashboards
+* Real-time progress indicators
 
 ---
 
@@ -304,25 +303,25 @@ Current implementation uses in-memory session storage suitable for demos and pro
 
 For production deployments:
 
-- PostgreSQL / MongoDB
-- JWT Authentication
-- API Rate Limiting
-- Redis Caching
-- Secure Secret Management
-- Centralized Logging
-- Retry & Recovery Systems
-- Kubernetes / Docker Scaling
+* PostgreSQL / MongoDB
+* JWT Authentication
+* API Rate Limiting
+* Redis Caching
+* Secure Secret Management
+* Centralized Logging
+* Retry & Recovery Systems
+* Kubernetes / Docker Scaling
 
 ---
 
 # 📌 Future Improvements
 
-- Multi-user collaboration
-- Fine-tuned domain-specific models
-- Auto dashboard generation
-- AI-powered forecasting
-- Cloud warehouse integration
-- Scheduled analytics workflows
+* Multi-user collaboration
+* Fine-tuned domain-specific models
+* Auto dashboard generation
+* AI-powered forecasting
+* Cloud warehouse integration
+* Scheduled analytics workflows
 
 ---
 
@@ -334,11 +333,11 @@ Data Science & AI Engineer
 
 ### Specializations
 
-- Machine Learning
-- Generative AI
-- LLM Engineering
-- Multi-Agent Systems
-- Full-Stack AI Applications
+* Machine Learning
+* Generative AI
+* LLM Engineering
+* Multi-Agent Systems
+* Full-Stack AI Applications
 
 GitHub: https://github.com/vinayak533
 
@@ -354,15 +353,15 @@ This project is licensed under the MIT License.
 
 Built using:
 
-- FastAPI
-- React
-- Vite
-- Tailwind CSS
-- Groq
-- Google Gemini
-- Hugging Face
-- Scikit-learn
-- XGBoost
+* FastAPI
+* React
+* Vite
+* Tailwind CSS
+* Groq
+* Google Gemini
+* Hugging Face
+* Scikit-learn
+* XGBoost
 
 ---
 

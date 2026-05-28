@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-bg-dark: #05070A;
+  --color-card-bg: #0A0F1A;
+  --color-card-border: rgba(255, 255, 255, 0.08);
+  --color-accent-cyan: #00F5FF;
+  --color-accent-blue: #2E73FF;
+  --color-accent-purple: #9D50FF;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #94A3B8;
+  --color-state-success: #10B981;
+  --color-state-warning: #F59E0B;
+  --color-state-error: #EF4444;
+  
+  --shadow-cyanGlow: 0 0 50px rgba(0, 245, 255, 0.08);
+  --shadow-cyanGlowHover: 0 0 80px rgba(0, 245, 255, 0.15);
+  --shadow-premium: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+@layer base {
+  body {
+    background-color: #05070A;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-image: 
+      radial-gradient(circle at 50% 50%, rgba(0, 245, 255, 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 0% 0%, rgba(46, 115, 255, 0.03) 0%, transparent 40%),
+      radial-gradient(circle at 100% 100%, rgba(157, 80, 255, 0.03) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
+}
+
+/* Glassmorphism custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 245, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
+}
+
+/* Premium Animations */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite linear;
+}
+
+@keyframes border-pulse {
+  0%, 100% { border-color: rgba(255, 255, 255, 0.08); }
+  50% { border-color: rgba(0, 245, 255, 0.3); }
+}
+
+.border-glow {
+  animation: border-pulse 4s infinite ease-in-out;
+}
+
+/* High-end Glassmorphism Cards */
+.glass-card {
+  background: rgba(10, 15, 26, 0.4) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37) !important;
+}
+
+.card-hover-premium {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.card-hover-premium:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  border-color: rgba(0, 245, 255, 0.4) !important;
+  background: rgba(10, 15, 26, 0.6) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 
+              0 0 40px rgba(0, 245, 255, 0.1) !important;
+}
+
+/* Premium Text Styles */
+.text-gradient-premium {
+  background: linear-gradient(to bottom right, #FFFFFF 30%, rgba(255, 255, 255, 0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-accent-gradient {
+  background: linear-gradient(135deg, #00F5FF 0%, #2E73FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Table Enhancements */
+.custom-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.custom-table th {
+  background: rgba(255, 255, 255, 0.02);
+  color: #94A3B8;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: left;
+}
+
+.custom-table td {
+  padding: 16px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: #E2E8F0;
+}
+
+.custom-table tr:hover td {
+  background: rgba(0, 245, 255, 0.02);
+}
+
+/* Input Styles */
+.premium-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.premium-input:focus {
+  border-color: rgba(0, 245, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.1);
+}
+
+/* Button Styles */
+.premium-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.premium-button::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.premium-button:hover::after {
+  opacity: 1;
+}
+
+.premium-button:active {
+  transform: scale(0.97);
+}
+

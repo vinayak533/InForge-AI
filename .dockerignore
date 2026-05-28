@@ -1,0 +1,22 @@
+# Exclude source control
+.git
+.gitignore
+
+# Exclude local virtual environments and caches
+backend/venv
+backend/.venv
+backend/__pycache__
+backend/.pytest_cache
+venv
+.venv
+.pytest_cache
+__pycache__
+
+# Exclude frontend node modules and build assets
+frontend/node_modules
+frontend/dist
+.npm-cache
+
+# Exclude local environment files
+backend/.env
+.env

@@ -1,12 +1,11 @@
 ---
-
 title: InForge AI Backend
 emoji: 🤖
 colorFrom: blue
 colorTo: purple
 sdk: docker
 pinned: false
--------------
+---
 
 # 🚀 INFORGE-AI
 
@@ -26,8 +25,6 @@ Users simply upload a CSV or Excel dataset, and the platform automatically perfo
 * Conversational Q&A
 
 All with zero manual intervention.
-
----
 
 # ✨ Features
 

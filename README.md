@@ -1,3 +1,14 @@
+---
+title: InForge AI Backend
+emoji: 🤖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
+---
+
 # 🚀 INFORGE-AI
 
 > Autonomous Multi-Agent AI Analytics Platform
@@ -124,6 +135,7 @@ INFORGE-AI/
 │   ├── public/
 │   └── package.json
 │
+├── Dockerfile
 ├── README.md
 └── docker-compose.yml
 ```
@@ -146,23 +158,23 @@ INFORGE-AI/
 
 # 📊 Machine Learning Capabilities
 
-INFORGE-AI automatically detects the appropriate ML task:
+INFORGE-AI automatically detects the appropriate ML task.
 
-## Classification
+## Classification Models
 
 - Logistic Regression
 - Random Forest
 - XGBoost
 - KNN
 
-## Regression
+## Regression Models
 
 - Linear Regression
 - Ridge Regression
 - Random Forest Regressor
 - XGBoost Regressor
 
-## Clustering
+## Clustering Models
 
 - KMeans
 - DBSCAN
@@ -207,7 +219,7 @@ python -m venv .venv
 # Windows
 .venv\Scripts\activate
 
-# Linux/Mac
+# Linux / Mac
 source .venv/bin/activate
 
 pip install -r requirements.txt
@@ -288,9 +300,9 @@ OPENROUTER_API_KEY=your_key
 
 # ⚠️ Production Recommendations
 
-Current implementation uses in-memory sessions for demo purposes.
+Current implementation uses in-memory session storage suitable for demos and prototypes.
 
-For production:
+For production deployments:
 
 - PostgreSQL / MongoDB
 - JWT Authentication
@@ -298,7 +310,7 @@ For production:
 - Redis Caching
 - Secure Secret Management
 - Centralized Logging
-- Retry & Recovery System
+- Retry & Recovery Systems
 - Kubernetes / Docker Scaling
 
 ---
@@ -309,7 +321,7 @@ For production:
 - Fine-tuned domain-specific models
 - Auto dashboard generation
 - AI-powered forecasting
-- Cloud data warehouse integration
+- Cloud warehouse integration
 - Scheduled analytics workflows
 
 ---
@@ -319,6 +331,8 @@ For production:
 **Vinayak K V**
 
 Data Science & AI Engineer
+
+### Specializations
 
 - Machine Learning
 - Generative AI

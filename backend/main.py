@@ -35,6 +35,14 @@ CHAT_HISTORIES = {}
 class ChatMessage(BaseModel):
     message: str
 
+@app.get("/")
+async def root_health():
+    return {
+        "status": "healthy",
+        "service": "InForge AI Backend",
+        "version": "1.0.0"
+    }
+
 @app.post("/upload")
 async def upload_file(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     """

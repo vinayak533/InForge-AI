@@ -1,3 +1,12 @@
+---
+title: InForge AI Backend
+emoji: 🤖
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # 🚀 INFORGE-AI
 
 > **Autonomous Multi-Agent AI Analytics Platform** — Transform raw datasets into actionable business intelligence with zero manual intervention.

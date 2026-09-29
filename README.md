@@ -25,6 +25,7 @@ Upload a CSV or Excel file. INFORGE-AI handles everything else:
 - **Business Insights** — synthesized from your data, in plain language
 - **Code Generation** — reproducible Python scripts for every step
 - **Conversational Q&A** — ask follow-up questions in natural language
+- **Resilient fallback mode** — returns computed summaries, charts, reports, and chat answers even when external LLM APIs are unavailable
 
 ---
 
@@ -54,8 +55,10 @@ FastAPI Backend
         ↓
 Multi-Agent Orchestrator
         ↓
-LLMs + ML Models + Analytics Engine
+LLMs + Local Fallbacks + ML Models + Analytics Engine
 ```
+
+The backend computes the core analytics locally with pandas, scikit-learn, XGBoost, Matplotlib, and Seaborn. LLMs are used to enrich explanations, chart strategy, generated code, and conversational answers. If an LLM provider fails because of an invalid key, unavailable model, rate limit, or network issue, INFORGE-AI falls back to deterministic local summaries so the user still gets a completed analysis.
 
 ---
 
@@ -70,7 +73,8 @@ LLMs + ML Models + Analytics Engine
 |-------|---------|
 | Gemini 2.0 Flash Lite | Visualization reasoning |
 | Groq Llama-3.3-70B | Insights & synthesis |
-| Nemotron | Schema & data analysis |
+| OpenRouter-compatible LLMs | Schema & data analysis |
+| Local fallback heuristics | Offline/resilient summaries and chat answers |
 
 ### Frontend
 `React 19` · `Vite` · `Tailwind CSS 4` · `Framer Motion` · `Recharts` · `Lucide React`
@@ -83,11 +87,9 @@ LLMs + ML Models + Analytics Engine
 INFORGE-AI/
 ├── backend/
 │   ├── agents/
-│   ├── services/
-│   ├── routes/
-│   ├── websocket/
-│   ├── exports/
-│   ├── app.py
+│   ├── pipeline/
+│   ├── utils/
+│   ├── main.py
 │   └── requirements.txt
 ├── frontend/
 │   ├── src/
@@ -157,16 +159,16 @@ cd InForge-AI
 
 ```bash
 cd backend
-python -m venv .venv
+python -m venv ../venv
 
 # Windows
-.venv\Scripts\activate
+..\venv\Scripts\activate
 
 # Linux / Mac
-source .venv/bin/activate
+source ../venv/bin/activate
 
 pip install -r requirements.txt
-uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+python main.py
 ```
 
 Backend runs at `http://localhost:8000`
@@ -181,6 +183,21 @@ npm run dev
 
 Frontend runs at `http://localhost:5173`
 
+### 4. Single-port local preview
+
+To serve the production React build from FastAPI:
+
+```bash
+cd frontend
+npm install
+npm run build
+
+cd ../backend
+../venv/Scripts/python.exe main.py
+```
+
+Open `http://localhost:8000/index.html`.
+
 ---
 
 ## 🔐 Environment Variables
@@ -192,6 +209,8 @@ GEMINI_API_KEY=your_key
 GROQ_API_KEY=your_key
 OPENROUTER_API_KEY=your_key
 ```
+
+These keys are optional for the core pipeline. Without valid keys, the platform still runs local schema detection, cleaning, EDA, visualization, ML benchmarking, report/code fallback generation, and chat answers grounded in computed results.
 
 ---
 

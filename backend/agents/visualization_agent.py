@@ -90,7 +90,35 @@ Return a JSON object containing:
         strategy = await call_gemini_json(GEMINI_MODEL, system_prompt, user_prompt)
     except Exception as e:
         logger.warning(f"Gemini API failed ({e}), falling back to Groq...")
-        strategy = await call_groq_json(GROQ_MODEL, system_prompt, user_prompt)
+        try:
+            strategy = await call_groq_json(GROQ_MODEL, system_prompt, user_prompt)
+        except Exception as groq_err:
+            logger.warning(f"Groq visualization strategy failed ({groq_err}). Using local chart strategy.")
+            recommended_charts = []
+            for col in numeric_cols[:3]:
+                recommended_charts.append({
+                    "chart_type": "distribution",
+                    "x": col,
+                    "title": f"Distribution of {col}"
+                })
+            for pair in top_correlations[:2]:
+                recommended_charts.append({
+                    "chart_type": "scatter",
+                    "x": pair.get("feature_1"),
+                    "y": pair.get("feature_2"),
+                    "hue": potential_target if potential_target in df.columns else None,
+                    "title": f"{pair.get('feature_1')} vs {pair.get('feature_2')}"
+                })
+            for col in categorical_cols[:1]:
+                recommended_charts.append({
+                    "chart_type": "bar",
+                    "x": col,
+                    "title": f"Top values in {col}"
+                })
+            strategy = {
+                "recommended_charts": recommended_charts[:6],
+                "visual_theme_notes": "Charts selected using local column-type and correlation heuristics."
+            }
     
     # Now, programmatically generate the charts based on the strategy + standard default charts
     charts_dict = {}

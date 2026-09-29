@@ -5,6 +5,79 @@ from agents.base_agent import call_groq
 
 MODEL = "llama-3.3-70b-versatile"
 
+def _fmt_score(value):
+    if isinstance(value, (int, float)):
+        return f"{value:.3f}"
+    return str(value)
+
+def _local_chat_answer(question: str, context_summary: dict) -> str:
+    question_l = question.lower()
+    lines = []
+
+    if any(token in question_l for token in ["model", "ml", "machine", "score", "accuracy", "best"]):
+        lines.append(f"Best model: {context_summary['best_predictive_model']}")
+        lines.append("Reason: it ranked highest on the pipeline's primary benchmark metric for the detected ML task.")
+        model_results = context_summary.get("all_model_results", [])
+        if model_results:
+            lines.append("\nModel comparison:")
+            for row in model_results[:6]:
+                metrics = [f"{k}: {_fmt_score(v)}" for k, v in row.items() if k != "model"]
+                lines.append(f"- {row.get('model', 'Model')}: {', '.join(metrics)}")
+
+    elif any(token in question_l for token in ["correlation", "relationship", "related"]):
+        correlations = context_summary.get("strongest_correlations", [])
+        if correlations:
+            lines.append("Strongest correlations:")
+            for item in correlations[:5]:
+                lines.append(
+                    f"- {item.get('feature_1')} and {item.get('feature_2')}: "
+                    f"{_fmt_score(item.get('correlation'))}"
+                )
+        else:
+            lines.append("No strong numeric correlations were available in the completed analysis.")
+
+    elif any(token in question_l for token in ["clean", "quality", "missing", "duplicate", "null"]):
+        actions = context_summary.get("cleaning_actions_taken", [])
+        if actions:
+            lines.append("Data quality actions:")
+            lines.extend(f"- {action}" for action in actions[:8])
+        else:
+            lines.append("No major cleaning actions were required or recorded.")
+
+    elif any(token in question_l for token in ["feature", "column", "important"]):
+        lines.append(f"Dataset size: {context_summary['dataset_dimensions']}")
+        lines.append(f"Detected target: {context_summary['detected_target']}")
+        correlations = context_summary.get("strongest_correlations", [])
+        if correlations:
+            lines.append("Important feature relationships:")
+            for item in correlations[:5]:
+                lines.append(
+                    f"- {item.get('feature_1')} / {item.get('feature_2')}: "
+                    f"{_fmt_score(item.get('correlation'))}"
+                )
+        else:
+            lines.append("No ranked feature relationships were available from correlation analysis.")
+
+    else:
+        summary = context_summary.get("dataset_executive_summary")
+        if summary:
+            lines.append(summary)
+        else:
+            lines.append(
+                f"The analysis completed for {context_summary['dataset_dimensions']} "
+                f"with target `{context_summary['detected_target']}`."
+            )
+        insights = context_summary.get("business_insights", [])
+        if insights:
+            lines.append("\nKey insights:")
+            lines.extend(f"- {insight}" for insight in insights[:5])
+        recs = context_summary.get("recommended_business_actions", [])
+        if recs:
+            lines.append("\nRecommended actions:")
+            lines.extend(f"- {rec}" for rec in recs[:3])
+
+    return "\n".join(lines)
+
 async def run_chat_agent(question: str, history: list[dict], pipeline_context: dict) -> str:
     """
     Handles context-enriched conversation between the user and Qwen3-32b via Groq
@@ -71,5 +144,8 @@ User's Latest Question: {question}
 Answer the latest question in a highly informative and professional manner, grounding your responses in the analytical context above.
 """
     
-    response = await call_groq(MODEL, system_prompt, user_prompt, temperature=0.5)
-    return response
+    try:
+        response = await call_groq(MODEL, system_prompt, user_prompt, temperature=0.5)
+        return response
+    except Exception:
+        return _local_chat_answer(question, context_summary)

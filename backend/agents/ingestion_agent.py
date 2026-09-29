@@ -75,16 +75,58 @@ Return a JSON object containing:
 }}
 """
     
+    fallback_schema = []
+    for info in columns_info:
+        unique_count = info["unique_values_count"]
+        missing_percent = round((info["missing_values_count"] / row_count) * 100, 2) if row_count else 0.0
+        dtype = info["pandas_type"]
+        name = info["name"]
+        lower_name = name.lower()
+
+        if unique_count == row_count and row_count > 0:
+            detected_type = "id"
+            reasoning = "Column has unique values for every row."
+        elif info["is_bool"]:
+            detected_type = "boolean"
+            reasoning = "Column has two boolean-like values."
+        elif "datetime" in dtype or "date" in lower_name or "time" in lower_name:
+            detected_type = "datetime"
+            reasoning = "Column name or dtype indicates date/time data."
+        elif pd.api.types.is_numeric_dtype(df[name]):
+            detected_type = "numeric"
+            reasoning = "Column is numeric."
+        elif unique_count <= max(20, row_count * 0.2):
+            detected_type = "categorical"
+            reasoning = "Column has a limited number of repeated values."
+        else:
+            detected_type = "text"
+            reasoning = "Column contains non-numeric values with higher cardinality."
+
+        fallback_schema.append({
+            "column_name": name,
+            "detected_type": detected_type,
+            "reasoning": reasoning,
+            "unique_count": unique_count,
+            "missing_percent": missing_percent
+        })
+
+    fallback_target = str(df.columns[-1]) if len(df.columns) > 0 else ""
+
     # Call agent
     try:
         result = await call_openrouter_json(MODEL, system_prompt, user_prompt)
         if not isinstance(result, dict):
             logger.error(f"LLM returned non-dictionary response: {type(result)}")
             # Attempt to wrap if it's a list or something else
-            result = {"raw_response": result, "schema": [], "potential_target": ""}
+            result = {"raw_response": result, "schema": fallback_schema, "potential_target": fallback_target}
     except Exception as e:
         logger.error(f"Failed to call LLM for ingestion analysis: {e}")
-        result = {"schema": [], "potential_target": str(df.columns[-1]) if len(df.columns) > 0 else "", "error": str(e)}
+        result = {
+            "schema": fallback_schema,
+            "potential_target": fallback_target,
+            "target_reasoning": "Selected the final column as a local fallback target.",
+            "error": str(e)
+        }
     
     # Enrich result with actual counts and sample rows
     result["row_count"] = row_count
@@ -104,8 +146,8 @@ Return a JSON object containing:
     
     # Ensure mandatory keys exist for orchestrator
     if "potential_target" not in result:
-        result["potential_target"] = str(df.columns[-1]) if len(df.columns) > 0 else ""
+        result["potential_target"] = fallback_target
     if "schema" not in result:
-        result["schema"] = []
+        result["schema"] = fallback_schema
         
     return result

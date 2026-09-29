@@ -1,9 +1,11 @@
 import os
 import pandas as pd
 import numpy as np
+import logging
 from agents.base_agent import call_openrouter_json
 
 MODEL = "meta-llama/llama-3.3-70b-instruct"
+logger = logging.getLogger("EDAAgent")
 
 async def run_eda_agent(df: pd.DataFrame, previous_context: dict) -> dict:
     """
@@ -110,8 +112,40 @@ Return a JSON object containing:
 }}
 """
     
-    # Get verbal summary
-    textual_insights = await call_openrouter_json(MODEL, system_prompt, user_prompt)
+    # Get verbal summary. If external LLMs are unavailable, keep the pipeline alive
+    # with deterministic summaries from the computed statistics.
+    try:
+        textual_insights = await call_openrouter_json(MODEL, system_prompt, user_prompt)
+    except Exception as e:
+        logger.warning(f"LLM EDA summary failed: {e}. Using local EDA fallback.")
+        if top_correlations:
+            top = top_correlations[0]
+            corr_text = (
+                f"The strongest observed numeric relationship is between "
+                f"{top['feature_1']} and {top['feature_2']} "
+                f"(correlation {top['correlation']:.3f})."
+            )
+        else:
+            corr_text = "No strong pairwise numeric correlations were detected or there were too few numeric columns."
+
+        if skewed_columns:
+            skew_text = ", ".join(f"{item['column']} ({item['skewness']:.2f})" for item in skewed_columns[:5])
+            distribution_text = f"Several columns are materially skewed: {skew_text}."
+        elif stats:
+            distribution_text = f"Computed descriptive statistics for {len(stats)} numeric columns with no major skewness flags."
+        else:
+            distribution_text = "The dataset has limited numeric columns, so distribution analysis is primarily categorical."
+
+        if zero_variance_cols:
+            flags_text = f"Zero-variance columns may add no predictive value: {', '.join(map(str, zero_variance_cols[:8]))}."
+        else:
+            flags_text = "No zero-variance columns were detected."
+
+        textual_insights = {
+            "distribution_analysis": distribution_text,
+            "correlation_analysis": corr_text,
+            "flags_analysis": flags_text
+        }
     
     # Combine stats and text into a single context response
     result = {

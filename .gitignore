@@ -51,6 +51,7 @@ Thumbs.db
 
 # Project specific
 backend/.env
+*.log
 pipeline_results.json
 dummy_classification.csv
 test_api_keys.py

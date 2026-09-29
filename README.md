@@ -1,23 +1,59 @@
-# INFORGE-AI
+<p align="center">
+  <img src="frontend/public/favicon.svg" width="72" alt="INFORGE-AI logo" />
+</p>
+
+<h1 align="center">INFORGE-AI</h1>
+
+<p align="center">
+  <strong>Autonomous multi-agent analytics for CSV and Excel datasets.</strong>
+</p>
+
+<p align="center">
+  <img alt="FastAPI" src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" />
+  <img alt="React" src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" />
+  <img alt="Python" src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
+  <img alt="scikit-learn" src="https://img.shields.io/badge/scikit--learn-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white" />
+</p>
+
+<p align="center">
+  <img alt="LLM fallback ready" src="https://img.shields.io/badge/LLM%20Fallback-Ready-2EA44F?style=flat-square" />
+  <img alt="Realtime" src="https://img.shields.io/badge/Realtime-WebSocket-7C3AED?style=flat-square" />
+  <img alt="Exports" src="https://img.shields.io/badge/Exports-PDF%20%7C%20CSV%20%7C%20Code-F97316?style=flat-square" />
+  <img alt="License" src="https://img.shields.io/badge/License-MIT-111827?style=flat-square" />
+</p>
 
 Autonomous multi-agent analytics platform for turning raw CSV and Excel datasets into cleaned data, exploratory analysis, visualizations, machine learning benchmarks, business insights, exports, and conversational Q&A.
 
 INFORGE-AI is designed so the core analytical workflow remains useful even when external LLM providers are unavailable. The backend computes schema diagnostics, cleaning, EDA, visualizations, model training, metrics, and exports locally, then uses LLMs to enrich the user-facing explanations when valid provider credentials are available.
 
-## What The System Does
+## Navigation
+
+| Section | What you get |
+|---|---|
+| [What The System Does](#-what-the-system-does) | End-user capability overview |
+| [Architecture](#-architecture) | System shape and agent flow |
+| [Local Development](#-local-development) | Backend and frontend setup |
+| [API Reference](#-api-reference) | Upload, results, chat, exports |
+| [Pipeline Details](#-pipeline-details) | Agent-by-agent behavior |
+| [Reliability Behavior](#-reliability-behavior) | LLM fallback guarantees |
+| [Troubleshooting](#-troubleshooting) | Common failure paths |
+
+## ✨ What The System Does
 
 Upload a dataset and the platform runs a full analysis pipeline:
 
-- Detects schema, data types, dimensions, sample rows, and a likely modeling target.
-- Cleans duplicates, missing values, high-missing columns, and common data quality issues.
-- Computes descriptive statistics, skewness, categorical counts, correlations, and EDA flags.
-- Generates visualizations such as correlation heatmaps, distributions, box plots, bar charts, and scatter plots.
-- Auto-detects classification, regression, or clustering tasks.
-- Benchmarks multiple ML models and selects the best performer by task-appropriate metrics.
-- Produces business insights, recommendations, downloadable reports, cleaned data, and reproducible code.
-- Provides a chat assistant that answers questions using the completed analysis context.
+| Icon | Capability | Result |
+|---:|---|---|
+| 🧭 | Schema intelligence | Detects data types, dimensions, sample rows, and a likely modeling target |
+| 🧹 | Data cleaning | Handles duplicates, missing values, high-missing columns, and quality issues |
+| 📊 | EDA | Computes statistics, skewness, categorical counts, correlations, and flags |
+| 🎨 | Visualization | Builds heatmaps, distributions, box plots, bar charts, and scatter plots |
+| 🤖 | ML benchmarking | Detects classification, regression, or clustering and compares models |
+| 💡 | Business insights | Produces summaries, recommendations, reports, and reproducible code |
+| 💬 | Contextual chat | Answers follow-up questions using the completed analysis context |
 
-## Architecture
+## 🧱 Architecture
 
 ```text
 React + Vite frontend
@@ -44,22 +80,50 @@ Local analytics engine + optional LLM enrichment
 
 The analytical foundation is local and deterministic. LLM calls are used for richer prose, recommendations, chart strategy, generated code, and conversational responses. If OpenRouter, Groq, or Gemini fails because of an invalid key, unavailable model, rate limit, or network issue, the system falls back to local heuristics so the pipeline can still complete.
 
-## Tech Stack
+<details>
+<summary><strong>Open pipeline flow</strong></summary>
+
+```mermaid
+flowchart LR
+  A[Upload CSV/XLS/XLSX] --> B[Ingestion]
+  B --> C[Cleaning]
+  C --> D[EDA]
+  D --> E[Visualization]
+  E --> F[ML Benchmarking]
+  F --> G[Insights]
+  G --> H[Code + Exports]
+  H --> I[Chat Q&A]
+
+  B -. optional .-> L[LLM Enrichment]
+  D -. optional .-> L
+  E -. optional .-> L
+  G -. optional .-> L
+  I -. optional .-> L
+  L -. failure .-> R[Local Fallbacks]
+```
+
+</details>
+
+## 🧰 Tech Stack
 
 Backend:
 
-- FastAPI, Uvicorn, WebSockets
-- pandas, NumPy, scikit-learn, XGBoost
-- Matplotlib, Seaborn, ReportLab
-- httpx, python-dotenv
+| Layer | Tools |
+|---|---|
+| API | FastAPI, Uvicorn, WebSockets |
+| Data | pandas, NumPy |
+| ML | scikit-learn, XGBoost |
+| Charts & reports | Matplotlib, Seaborn, ReportLab |
+| Integrations | httpx, python-dotenv |
 
 Frontend:
 
-- React 19, Vite
-- Tailwind CSS
-- Framer Motion
-- Recharts
-- Lucide React
+| Layer | Tools |
+|---|---|
+| App runtime | React 19, Vite |
+| UI | Tailwind CSS, Lucide React |
+| Motion | Framer Motion |
+| Charts | Recharts |
 
 Optional AI providers:
 
@@ -68,7 +132,7 @@ Optional AI providers:
 - Gemini for visualization strategy fallback
 - Local fallback heuristics when providers are unavailable
 
-## Repository Layout
+## 📁 Repository Layout
 
 ```text
 INFORGE-AI/
@@ -90,7 +154,7 @@ INFORGE-AI/
 └── README.md
 ```
 
-## Local Development
+## ⚙️ Local Development
 
 ### 1. Clone
 
@@ -152,7 +216,7 @@ http://localhost:5173
 
 During Vite development, the frontend calls the backend at `http://localhost:8000`.
 
-## Single-Port Preview
+## 🚀 Single-Port Preview
 
 For a simple local preview where FastAPI serves the built React app:
 
@@ -177,7 +241,7 @@ On macOS/Linux, use:
 ../venv/bin/python main.py
 ```
 
-## Environment Variables
+## 🔐 Environment Variables
 
 Create `backend/.env` if you want LLM-enriched responses:
 
@@ -189,7 +253,7 @@ OPENROUTER_API_KEY=your_openrouter_key
 
 These keys are optional for the core analytics workflow. Without valid keys, INFORGE-AI still runs local ingestion, cleaning, EDA, visualization, ML benchmarking, fallback insight generation, fallback code generation, and chat answers grounded in computed results.
 
-## API Reference
+## 🔌 API Reference
 
 | Endpoint | Method | Description |
 |---|---:|---|
@@ -209,7 +273,27 @@ curl -X POST "http://localhost:8000/chat/<session_id>" \
   -d "{\"message\":\"What is the best model and why?\"}"
 ```
 
-## Pipeline Details
+<details>
+<summary><strong>Open API lifecycle</strong></summary>
+
+```text
+POST /upload
+  -> returns session_id
+  -> backend starts pipeline in the background
+
+WS /ws/{session_id}
+  -> streams agent progress to the dashboard
+
+GET /results/{session_id}
+  -> returns processing, failed, or completed results
+
+POST /chat/{session_id}
+  -> answers only after the session is completed
+```
+
+</details>
+
+## 🧠 Pipeline Details
 
 ### Ingestion
 
@@ -241,7 +325,7 @@ The best model is selected using the appropriate metric for the detected task.
 
 The insights and chat layers use LLMs when available. If provider calls fail, they answer from the computed pipeline context, including model metrics, correlations, cleaning actions, recommendations, and dataset dimensions.
 
-## Reliability Behavior
+## 🛡️ Reliability Behavior
 
 INFORGE-AI intentionally separates analytical correctness from LLM availability:
 
@@ -251,7 +335,7 @@ INFORGE-AI intentionally separates analytical correctness from LLM availability:
 - Chat answers remain available after successful analysis completion.
 - Old failed sessions should be re-uploaded because uploaded file bytes are not persisted after failure.
 
-## Deployment
+## 🌐 Deployment
 
 Typical deployment split:
 
@@ -267,9 +351,10 @@ VITE_API_BASE_URL=https://your-backend-host
 VITE_WS_URL=wss://your-backend-host
 ```
 
-## Troubleshooting
+## 🧯 Troubleshooting
 
-### Chat says the session is still processing
+<details>
+<summary><strong>Chat says the session is still processing</strong></summary>
 
 The chat endpoint only works after the analysis status is `completed`. Check:
 
@@ -277,15 +362,24 @@ The chat endpoint only works after the analysis status is `completed`. Check:
 GET /results/{session_id}
 ```
 
-### The pipeline previously failed
+</details>
+
+<details>
+<summary><strong>The pipeline previously failed</strong></summary>
 
 Refresh the app and upload the dataset again. Failed in-memory sessions cannot be resumed after a backend restart or unrecoverable processing failure.
 
-### LLM provider errors appear in logs
+</details>
+
+<details>
+<summary><strong>LLM provider errors appear in logs</strong></summary>
 
 The app can still complete using fallback logic. To enable enriched prose, confirm the keys in `backend/.env` and verify that the configured provider models are available to your account.
 
-### Frontend cannot reach backend
+</details>
+
+<details>
+<summary><strong>Frontend cannot reach backend</strong></summary>
 
 Make sure FastAPI is running on port `8000`. In Vite dev mode, the frontend defaults to:
 
@@ -293,13 +387,15 @@ Make sure FastAPI is running on port `8000`. In Vite dev mode, the frontend defa
 http://localhost:8000
 ```
 
-## Exports
+</details>
+
+## 📦 Exports
 
 - Cleaned CSV dataset
 - PDF analysis report
 - Reproducible Python analysis script
 
-## Roadmap
+## 🗺️ Roadmap
 
 - Multi-user workspaces
 - Persistent session storage
@@ -308,13 +404,13 @@ http://localhost:8000
 - Cloud warehouse connectors
 - Domain-specific model recommendations
 
-## Author
+## 👤 Author
 
 Vinayak K V  
 Data Science and AI Engineer  
 
 GitHub: [github.com/vinayak533](https://github.com/vinayak533)
 
-## License
+## 📄 License
 
 MIT License
